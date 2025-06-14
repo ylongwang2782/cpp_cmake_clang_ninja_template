@@ -14,10 +14,14 @@
     "C_Cpp.intelliSenseEngine": "disabled",
     "clangd.path": "clangd",
     "clangd.arguments": [
+        "--fallback-style=none",
         "--header-insertion=never",
         "--completion-style=detailed"
     ],
     "files.associations": {
         "iostream": "cpp"
-    }
+    },
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "editor.formatOnSave": true,
+    "C_Cpp.formatting": "clangFormat"
 }
