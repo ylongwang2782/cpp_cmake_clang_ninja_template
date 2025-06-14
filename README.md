@@ -1,105 +1,172 @@
-## 🧱 cpp\_cmake\_clang\_template
+# 🧱 cpp_cmake_clang_template
 
-一个用于在 **Windows** 上快速搭建 **Clang + CMake + C++** 工程的模板项目，支持 VSCode 快速开发、构建与调试。
+[![CMake Presets](https://img.shields.io/badge/CMake-Presets-blue.svg)](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
+[![Build with Clang++](https://img.shields.io/badge/build-clang%2B%2B-orange.svg)](https://clang.llvm.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-blue)](#)
+[![VSCode Ready](https://img.shields.io/badge/Editor-VSCode-007ACC.svg?logo=visual-studio-code)](https://code.visualstudio.com/)
 
-### ✨ 特性 Features
 
-* 📦 使用 CMake 构建系统，结构清晰易扩展
-* 🧠 支持 Clang 编译器在 Windows 上开发调试
-* 🛠️ 预配置 VSCode 的 `tasks.json` 和 `launch.json`，一键编译与调试
-* ⚡ 支持 Debug 和 Release 模式
-* 📁 项目结构简洁，适合作为 C++ 工程起点
+一个用于在 **Windows 上使用 Clang++ + CMake + Ninja** 快速搭建 C++ 工程的模板项目，适配 VSCode，支持调试与预设构建，适合作为个人项目或教学示范的起点工程。
 
 ---
 
-### 📁 项目结构 Project Structure
+## ✨ 特性 Features
+
+- ⚙️ 使用 CMake 管理构建流程
+- 🧠 支持 Clang++ 编译器 + Ninja 构建系统
+- 🖥️ 内置 VSCode 配置，支持一键构建和调试
+- 📋 支持 CMake Presets（推荐构建方式）
+- 🐞 支持断点调试（基于 LLDB）
+- ✅ 项目结构清晰、模块化、可拓展
+
+---
+
+## 📁 项目结构
+
+```
+
+cpp\_cmake\_clang\_template/
+├── CMakeLists.txt             # 顶层构建文件
+├── src/
+│   └── main.cpp               # 示例程序
+├── include/                   # 可选头文件目录
+├── build/                     # 构建输出目录（由 preset 自动生成）
+├── .vscode/
+│   ├── launch.json            # 调试配置（使用 LLDB）
+│   └── tasks.json             # 构建任务
+├── CMakePresets.json          # 构建预设管理推荐入口
+└── README.md
+
+````
+
+---
+
+## 🚀 快速开始（推荐使用 CMake Presets）
+
+### 🔧 环境要求
+
+- ✅ [LLVM/Clang](https://releases.llvm.org/)（推荐通过 Scoop 安装：`scoop install llvm`）
+- ✅ [CMake ≥ 3.23](https://cmake.org/)
+- ✅ [Ninja](https://ninja-build.org/)
+- ✅ [VSCode](https://code.visualstudio.com/)
+  - 插件：`CMake Tools`、`CodeLLDB`、`C/C++`
+
+### 📦 编译与运行
 
 ```bash
-cpp_cmake_clang_template/
-├── CMakeLists.txt          # 顶层CMake配置
-├── src/                    # 源码目录
-│   └── main.cpp
-├── include/                # 头文件目录
-├── build/                  # 构建输出目录（建议添加 .gitignore）
-├── .vscode/                # VSCode 配置
-│   ├── tasks.json
-│   └── launch.json
-└── README.md               # 项目说明
+# 初始化 Debug 构建
+cmake --preset debug
+
+# 构建
+cmake --build --preset debug
+
+# 运行可执行程序（或在 VSCode 中调试）
+./build/debug/main.exe
+````
+
+---
+
+## 🖥️ VSCode 使用说明
+
+### ✅ 快捷键
+
+* `Ctrl+Shift+B` — 执行构建任务
+* `F5` — 启动调试（断点、单步、查看变量）
+
+### ⚙️ 预配置说明
+
+* `launch.json` 使用 `CodeLLDB` 调试 clang++ 编译出的可执行文件
+* `tasks.json` 自动调用 `cmake --build` 构建项目
+* 可在 `.vscode/settings.json` 设置默认 preset：
+
+```json
+{
+  "cmake.preferredConfigurePreset": "debug",
+  "cmake.preferredBuildPreset": "debug"
+}
 ```
 
 ---
 
-### 🚀 快速开始 Quick Start
+## ⚙️ CMake Presets 配置（节选）
 
-#### 1️⃣ 准备环境
-
-确保以下工具已安装：
-
-* [Clang](https://releases.llvm.org/)
-* [CMake](https://cmake.org/)
-* [Ninja](https://ninja-build.org/)（可选，推荐）
-* [VSCode](https://code.visualstudio.com/) + [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
-
-#### 2️⃣ 构建项目
-
-```bash
-# 创建构建目录
-mkdir build
-cd build
-
-# 使用Clang作为编译器进行构建
-cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-
-# 编译
-cmake --build .
+```json
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "debug",
+      "inherits": "base-clang",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "base-clang",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" }
+  ]
+}
 ```
 
 ---
 
-### 🖥️ VSCode 使用说明
-
-#### 配置文件说明：
-
-* `.vscode/tasks.json`：定义了编译任务
-* `.vscode/launch.json`：配置了调试器（需使用 clang-cl 或 gdb/lldb）
-
-#### 一键编译运行：
-
-1. 按 `Ctrl+Shift+B` 编译
-2. 按 `F5` 调试运行
-
----
-
-### 🔧 自定义配置
-
-* 支持通过 `-DCMAKE_BUILD_TYPE=Release` 切换到 Release 模式
-* 可拓展添加单元测试、第三方库（如 Catch2、fmt、spdlog）
-
----
-
-### ✅ 示例输出
+## ✅ 示例输出
 
 ```bash
-$ ./build/main.exe
+$ ./build/debug/main.exe
 Hello, Clang + CMake on Windows!
 ```
 
 ---
 
-### 📌 常见问题 FAQ
+## ❓常见问题 FAQ
 
-#### Q: 编译器找不到？
+### Q: VSCode 无法命中断点？
 
-A: 请确认已将 Clang 添加到系统环境变量 `PATH` 中。
+A:
 
-#### Q: VSCode 无法识别 clang？
+* 确认构建类型为 `Debug`
+* 确认 `clang++` 与 `lldb` 来自相同 LLVM 版本
+* 检查是否正确配置 VSCode 调试器（使用 CodeLLDB）
 
-A: 安装 `LLVM` 后配置 `"C_Cpp.default.compilerPath"` 指向 `clang.exe`。
+### Q: 是否支持 Windows + MSVC 调试器？
+
+A: 本项目以 Clang++ + LLDB 为核心。如需切换至 `clang-cl` + `cppvsdbg`，请另行配置。
+
+---
+
+## 📜 License
+
+[MIT License](LICENSE) © 2025 YourName
 
 ---
 
-### 📜 许可证 License
+## 🙋‍♂️ 贡献或建议
 
-MIT License © 2025 YourName
+欢迎 issue / PR / 提问，共同完善本模板 🎉
+
+```
 
 ---
+
+如果你还希望我为这份 `README.md`：
+
+- 添加徽章（badge）
+- 添加 GitHub Actions 构建状态
+- 自动识别是否安装 Clang/Ninja/CMake 的检查脚本
+
+我可以继续帮你扩展。
+
+是否需要我将这份 README 输出为 Markdown 文件或直接写入你的工程目录？
+```
