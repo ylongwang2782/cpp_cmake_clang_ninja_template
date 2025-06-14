@@ -16,18 +16,22 @@
       "group": "build"
     },
     {
-      "label": "Build Project",
+      "label": "build",
       "type": "shell",
       "command": "cmake",
       "args": [
-        "--build", "build"
+        "--build", "${workspaceFolder}/build"
       ],
-      "group": "build"
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
     },
     {
-      "label": "Run UDP Server",
+      "label": "Run",
       "type": "shell",
-      "command": "${workspaceFolder}/build/udp_server.exe",
+      "command": "${workspaceFolder}/build/CppCmakeClangNinjaTemplate.exe",
       "problemMatcher": [],
       "group": {
         "kind": "test",

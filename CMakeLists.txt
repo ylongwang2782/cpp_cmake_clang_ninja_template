@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
-project(WhtsProtocol LANGUAGES CXX)
+project(cpp_cmake_clang_ninja_template LANGUAGES CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(udp_server src/main.cpp)
+add_executable(CppCmakeClangNinjaTemplate src/main.cpp)
+
