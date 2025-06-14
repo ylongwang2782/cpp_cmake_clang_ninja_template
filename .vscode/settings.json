@@ -1,0 +1,23 @@
+// .vscode/settings.json
+{
+    "cmake.generator": "Ninja",
+    "cmake.preferredGenerators": [
+        "Ninja"
+    ],
+    "cmake.cmakePath": "cmake",
+    "cmake.configureSettings": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+    },
+    "C_Cpp.default.compilerPath": "clang++",
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.path": "clangd",
+    "clangd.arguments": [
+        "--header-insertion=never",
+        "--completion-style=detailed"
+    ],
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}
