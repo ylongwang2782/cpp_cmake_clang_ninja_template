@@ -1,43 +1,53 @@
 // main.cpp
 #include "Logger.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-int test_logger() {
-    // 测试基本日志功能
-    Log::v("TestTag", "This is a verbose message");
-    Log::d("TestTag", "This is a debug message");
-    Log::i("TestTag", "This is an info message");
-    Log::w("TestTag", "This is a warning message");
-    Log::e("TestTag", "This is an error message");
-
-    std::cout << "\n--- Testing log level filtering ---\n";
-
-    // 设置日志级别为INFO，应该只显示INFO、WARN、ERROR
-    Log::setLogLevel(LogLevel::INFO);
-    Log::v("FilterTest", "This verbose should not appear");
-    Log::d("FilterTest", "This debug should not appear");
-    Log::i("FilterTest", "This info should appear");
-    Log::w("FilterTest", "This warning should appear");
-    Log::e("FilterTest", "This error should appear");
-
-    std::cout << "\n--- Testing file logging ---\n";
+int test_looger() {
+    // 设置日志级别
+    Log::setLogLevel(LogLevel::DEBUG);
 
     // 启用文件日志
-    Log::enableFileLogging("test.log");
-    Log::i("FileTest", "This message should appear in both console and file");
-    Log::w("FileTest", "This warning should also be logged to file");
+    Log::enableFileLogging("app.log");
 
-    // 禁用文件日志
-    Log::disableFileLogging();
-    Log::i("FileTest", "This message should only appear in console");
+    // 原有的字符串日志方式（仍然支持）
+    Log::i("MAIN", "Application started");
 
-    std::cout << "\n--- Testing SyncMsg example ---\n";
+    // 新的参数化日志方式
+    int userId = 12345;
+    std::string userName = "Bob";
+    double balance = 1234.56;
 
-    // 重置日志级别为VERBOSE以显示所有消息
-    Log::setLogLevel(LogLevel::VERBOSE);
-    Log::d("SyncMsg", "process");
+    // 使用 printf 风格的格式化（兼容性更好）
+    Log::i("USER", "User login: ID=%d, Name=%s", userId, userName.c_str());
+    Log::d("ACCOUNT", "User %s balance: %.2f", userName.c_str(), balance);
+
+    // 记录程序运行中的变量
+    for (int i = 0; i < 5; i++) {
+        Log::v("LOOP", "Processing item %d of %d", i + 1, 5);
+
+        if (i == 2) {
+            Log::w("LOOP",
+                   "Warning: Processing item %d took longer than expected",
+                   i + 1);
+        }
+    }
+
+    // 错误日志示例
+    int errorCode = 404;
+    std::string errorMsg = "File not found";
+    Log::e("ERROR", "Error occurred: Code=%d, Message=%s", errorCode,
+           errorMsg.c_str());
+
+    // 混合使用不同类型的参数
+    bool isConnected = true;
+    float temperature = 25.7f;
+    Log::i("SYSTEM", "Status: Connected=%s, Temperature=%.1f°C",
+           isConnected ? "true" : "false", temperature);
+
+    Log::i("MAIN", "Application finished");
 
     return 0;
 }
@@ -48,7 +58,7 @@ int main() {
 
     Log::d(TAG, "Hello, Cmake + clang + ninja on Windows!");
 
-    test_logger();
+    test_looger();
 
     return 0;
 }

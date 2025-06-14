@@ -5,7 +5,6 @@
 #include <iostream>
 #include <sstream>
 
-
 Logger &Logger::getInstance() {
     static Logger instance;
     return instance;
