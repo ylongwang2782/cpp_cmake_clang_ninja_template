@@ -6,5 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(CppCmakeClangNinjaTemplate src/main.cpp)
+include_directories(src)
+
+add_executable(CppCmakeClangNinjaTemplate src/main.cpp src/Logger.cpp)
 

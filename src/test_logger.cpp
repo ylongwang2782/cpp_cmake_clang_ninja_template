@@ -1,11 +1,7 @@
-// main.cpp
-#include <iostream>
 #include "Logger.h"
+#include <iostream>
 
-
-using namespace std;
-
-int test_logger() {
+int main() {
     // 测试基本日志功能
     Log::v("TestTag", "This is a verbose message");
     Log::d("TestTag", "This is a debug message");
@@ -39,20 +35,6 @@ int test_logger() {
     // 重置日志级别为VERBOSE以显示所有消息
     Log::setLogLevel(LogLevel::VERBOSE);
     Log::d("SyncMsg", "process");
-
-    return 0;
-
-}
-
-int main() {
-
-    constexpr const char* TAG = "BOOT";
-
-    Log::d(TAG, "Hello, Cmake + clang + ninja on Windows!");
     
-    test_logger();
-
     return 0;
-}
-
-
+} 
