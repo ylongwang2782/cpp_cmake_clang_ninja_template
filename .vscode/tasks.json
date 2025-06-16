@@ -20,7 +20,7 @@
       "type": "shell",
       "command": "cmake",
       "args": [
-        "--build", "${workspaceFolder}/build"
+        "--build", "${workspaceFolder}/build/debug"
       ],
       "group": {
         "kind": "build",

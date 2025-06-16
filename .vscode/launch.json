@@ -5,7 +5,7 @@
             "name": "Debug with LLDB",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/CppCmakeClangNinjaTemplate.exe",
+            "program": "${workspaceFolder}/build/debug/CppCmakeClangNinjaTemplate.exe",
             "cwd": "${workspaceFolder}",
             "args": [],
             "preLaunchTask": "build"
